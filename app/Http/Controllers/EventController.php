@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreEventRequest;
 use App\Http\Requests\UpdateEventRequest;
 use App\Models\Event;
+use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HtmlSanitizer\HtmlSanitizer;
 
 class EventController extends Controller
 {
@@ -13,8 +15,11 @@ class EventController extends Controller
      */
     public function index()
     {
+        $events = Event::all();
+        $calendar = $events->groupBy(['year', 'month']);
         return view('events.index', [
-            'events' => Event::all(),
+            'events' => $events,
+            'calendar' => $calendar,
         ]);
     }
 
@@ -34,10 +39,14 @@ class EventController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreEventRequest $request)
+    public function store(StoreEventRequest $request, HtmlSanitizer $sanitizer)
     {
-        // create event
-        $event = $request->user()->events()->create($request->validated());
+        $validated = $request->validated();
+        if (isset($validated['description'])) {
+            $validated['description'] = $sanitizer->sanitize($validated['description']);
+        }
+
+        $event = $request->user()->events()->create($validated);
 
         return redirect()->route('events.show', $event);
     }
@@ -57,6 +66,10 @@ class EventController extends Controller
      */
     public function edit(Event $event)
     {
+        if (Auth::user()->cannot('update', $event)) {
+            return view('events.must-login');
+        }
+
         return view('events.edit', [
             'event' => $event,
         ]);
@@ -65,12 +78,13 @@ class EventController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateEventRequest $request, Event $event)
+    public function update(UpdateEventRequest $request, Event $event, HtmlSanitizer $sanitizer)
     {
-        // update event
-        $request->authorize();
-        $event->update($request->validated());
-
+        $validated = $request->validated();
+        if (isset($validated['description'])) {
+            $validated['description'] = $sanitizer->sanitize($validated['description']);
+        }
+        $event->update($validated);
         return redirect()->route('events.show', $event);
     }
 
@@ -79,6 +93,7 @@ class EventController extends Controller
      */
     public function destroy(Event $event)
     {
-        //
+        $event->delete();
+        return redirect()->route('events.index');
     }
 }

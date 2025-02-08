@@ -19,11 +19,9 @@
 
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">
-                <x-secondary-button class="mr-6">
-                    <a href="{{ route('events.create') }}">
-                        {{ __('Create Event') }}
-                    </a>
-                </x-secondary-button>
+                <x-link href="{{ route('events.create') }}" class="mr-6">
+                    {{ __('Create Event') }}
+                </x-link>
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
                         <button

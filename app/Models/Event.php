@@ -2,28 +2,72 @@
 
 namespace App\Models;
 
+use App\Core\LocaleDateFormatter;
 use App\Models\Scopes\OrderByStartAsc;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Tonysm\RichTextLaravel\Models\Traits\HasRichText;
 
 class Event extends Model
 {
     /** @use HasFactory<\Database\Factories\EventFactory> */
-    use HasFactory, HasUuids;
+    use HasFactory, HasUuids, HasRichText;
 
     protected $guarded = ['id', 'user_id'];
 
-    public function getStartDateAttribute($value): string
+    protected $fillable = [
+        'name',
+        'start_date',
+        'end_date',
+        'location',
+        'description',
+
+    ]; // add description manually so wysiwyg editor can save it
+
+    protected $richTextAttributes = [
+        'description',
+    ];
+
+    public function dateRange(): Attribute
     {
-        return date('Y-m-d', strtotime($value));
+        $locale = request()->getPreferredLanguage();
+        return Attribute::make(
+            get: fn(mixed $value, array $attributes) => LocaleDateFormatter::format($locale, $attributes['start_date'])
+                . ' - ' .
+                LocaleDateFormatter::format($locale, $attributes['end_date']),
+        );
     }
 
-    public function getEndDateAttribute($value): string
+    public function month(): Attribute
     {
-        return date('Y-m-d', strtotime($value));
+        return Attribute::make(
+            get: fn(mixed $value, array $attributes) => date('F', strtotime($attributes['start_date'])),
+        );
+    }
+
+    public function year(): Attribute
+    {
+        return Attribute::make(
+            get: fn(mixed $value, array $attributes) => date('Y', strtotime($attributes['start_date'])),
+        );
+    }
+
+    public function startDate(): Attribute
+    {
+        return Attribute::make(
+            get: fn(string $value) => date('Y-m-d', strtotime($value)),
+        );
+    }
+
+    public function endDate(): Attribute
+    {
+        return Attribute::make(
+            get: fn(string $value) => date('Y-m-d', strtotime($value)),
+        );
     }
 
     public function user(): BelongsTo

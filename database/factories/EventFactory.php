@@ -17,7 +17,7 @@ class EventFactory extends Factory
      */
     public function definition(): array
     {
-        $startDate = \DateTimeImmutable::createFromMutable(fake()->dateTimeThisYear());
+        $startDate = \DateTimeImmutable::createFromMutable(fake()->dateTimeBetween('now', '+8 month'));
         $days = fake()->numberBetween(1, 4);
         $endDate = $startDate->modify("+{$days} day");
 

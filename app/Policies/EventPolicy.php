@@ -2,9 +2,9 @@
 
 namespace App\Policies;
 
+use App\Core\UserRole;
 use App\Models\Event;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class EventPolicy
 {
@@ -21,7 +21,7 @@ class EventPolicy
      */
     public function update(User $user, Event $event): bool
     {
-        return $user->id === $event->user_id;
+        return $user->id === $event->user_id || $user->isAdmin();
     }
 
     /**
@@ -29,7 +29,7 @@ class EventPolicy
      */
     public function delete(User $user, Event $event): bool
     {
-        return $user->id === $event->user_id;
+        return $user->id === $event->user_id  || $user->isAdmin();
     }
 
     /**
