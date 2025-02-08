@@ -16,7 +16,11 @@
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100">
-            @include('layouts.navigation')
+            @if(Auth::user())
+                @include('layouts.navigation')
+            @else
+                @include('layouts.guest-navigation')
+            @endif
 
             <!-- Page Heading -->
             @isset($header)
@@ -28,7 +32,7 @@
             @endisset
 
             <!-- Page Content -->
-            <main>
+            <main class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
                 {{ $slot }}
             </main>
         </div>
