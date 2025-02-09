@@ -42,6 +42,13 @@ class Event extends Model
         );
     }
 
+    public function day(): Attribute
+    {
+        return Attribute::make(
+            get: fn(mixed $value, array $attributes) => date('j', strtotime($attributes['start_date'])),
+        );
+    }
+
     public function month(): Attribute
     {
         return Attribute::make(

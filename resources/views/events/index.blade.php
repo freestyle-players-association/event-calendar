@@ -10,6 +10,7 @@
         @foreach($months as $month => $events)
             <section class="py-2">
                 <div class="flex gap-4 items-center">
+                    <hr class="w-full h-px my-8 bg-slate-200 border-0 dark:bg-slate-400">
                     <h3 class="text-xl font-bold">{{ $month }}</h3>
                     <hr class="w-full h-px my-8 bg-slate-200 border-0 dark:bg-slate-400">
                 </div>
