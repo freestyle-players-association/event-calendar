@@ -5,11 +5,11 @@ namespace App\Models;
 use App\Core\LocaleDateFormatter;
 use App\Models\Scopes\OrderByStartAsc;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\Storage;
 use Tonysm\RichTextLaravel\Models\Traits\HasRichText;
 
 class Event extends Model
@@ -25,7 +25,8 @@ class Event extends Model
         'end_date',
         'location',
         'description',
-
+        'banner',
+        'icon',
     ]; // add description manually so wysiwyg editor can save it
 
     protected $richTextAttributes = [
@@ -36,9 +37,33 @@ class Event extends Model
     {
         $locale = request()->getPreferredLanguage();
         return Attribute::make(
+            get: fn(mixed $value, array $attributes) => LocaleDateFormatter::formatShort($locale, $attributes['start_date'])
+                . ' - ' .
+                LocaleDateFormatter::formatShort($locale, $attributes['end_date']),
+        );
+    }
+
+    public function dateRangeFull(): Attribute
+    {
+        $locale = request()->getPreferredLanguage();
+        return Attribute::make(
             get: fn(mixed $value, array $attributes) => LocaleDateFormatter::format($locale, $attributes['start_date'])
                 . ' - ' .
                 LocaleDateFormatter::format($locale, $attributes['end_date']),
+        );
+    }
+
+    public function bannerUrl(): Attribute
+    {
+        return Attribute::make(
+            get: fn(mixed $value, array $attributes) => $attributes['banner'] ? asset(Storage::url('banners/'.$attributes['banner'])) : null,
+        );
+    }
+
+    public function iconUrl(): Attribute
+    {
+        return Attribute::make(
+            get: fn(mixed $value, array $attributes) => $attributes['icon'] ? asset(Storage::url('icons/'.$attributes['icon'])) : null,
         );
     }
 

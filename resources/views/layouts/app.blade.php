@@ -15,25 +15,20 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <x-rich-text::styles theme="richtextlaravel" data-turbo-track="false"/>
 </head>
-<body class="font-sans antialiased">
-<div class="min-h-screen ">
-    @include('layouts.navigation')
+<body class="font-sans antialiased bg-gradient-to-b from-white to-primary-50">
+    <div class="min-h-screen flex flex-col">
+        <x-flash-messages/>
+        @include('layouts.navigation')
+        <main class="grow pt-16">
+            @isset($banner)
+                {{ $banner }}
+            @endisset
+            <section class="max-w-6xl mx-auto px-4 py-4 pb-8 sm:px-6 lg:px-8">
+                {{ $slot }}
+            </section>
+        </main>
 
-    <!-- Page Heading -->
-    @isset($header)
-    <!--
-    <header class="bg-white shadow">
-        <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-            {{ $header }}
-        </div>
-    </header>
-    -->
-    @endisset
-
-    <!-- Page Content -->
-    <main class="max-w-6xl mx-auto pt-20 py-6 px-4 sm:px-6 lg:px-8">
-        {{ $slot }}
-    </main>
-</div>
+        <x-footer/>
+    </div>
 </body>
 </html>

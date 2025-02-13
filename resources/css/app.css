@@ -5,3 +5,5 @@
 .trix-button-group--file-tools {
     display: none !important;
 }
+
+[x-cloak] { display: none !important; }
