@@ -38,36 +38,36 @@ jobs:
       - name: Set up environment file
         run: |
           cat <<EOF > .env
-          APP_NAME=${{ env.APP_NAME }}
-          APP_ENV=${{ env.APP_ENV }}
+          APP_NAME=${{ vars.APP_NAME }}
+          APP_ENV=${{ vars.APP_ENV }}
           APP_KEY=${{ secrets.APP_KEY }}
-          APP_DEBUG=${{ env.APP_DEBUG }}
-          APP_URL=${{ env.APP_URL }}
+          APP_DEBUG=${{ vars.APP_DEBUG }}
+          APP_URL=${{ vars.APP_URL }}
 
-          LOG_CHANNEL=${{ env.LOG_CHANNEL }}
-          LOG_LEVEL=${{ env.LOG_LEVEL }}
+          LOG_CHANNEL=${{ vars.LOG_CHANNEL }}
+          LOG_LEVEL=${{ vars.LOG_LEVEL }}
 
-          DB_CONNECTION=${{ env.DB_CONNECTION }}
+          DB_CONNECTION=${{ vars.DB_CONNECTION }}
           #DB_HOST=${{ secrets.DB_HOST }}
           #DB_PORT=${{ secrets.DB_PORT }}
           #DB_DATABASE=${{ secrets.DB_DATABASE }}
           #DB_USERNAME=${{ secrets.DB_USERNAME }}
           #DB_PASSWORD=${{ secrets.DB_PASSWORD }}
 
-          BROADCAST_DRIVER=${{ env.BROADCAST_DRIVER }}
-          CACHE_DRIVER=${{ env.CACHE_DRIVER }}
-          QUEUE_CONNECTION=${{ env.QUEUE_CONNECTION }}
-          SESSION_DRIVER=${{ env.SESSION_DRIVER }}
-          SESSION_LIFETIME=${{ env.SESSION_LIFETIME }}
+          BROADCAST_DRIVER=${{ vars.BROADCAST_DRIVER }}
+          CACHE_DRIVER=${{ vars.CACHE_DRIVER }}
+          QUEUE_CONNECTION=${{ vars.QUEUE_CONNECTION }}
+          SESSION_DRIVER=${{ vars.SESSION_DRIVER }}
+          SESSION_LIFETIME=${{ vars.SESSION_LIFETIME }}
 
-          MAIL_MAILER=${{ env.MAIL_MAILER }}
+          MAIL_MAILER=${{ vars.MAIL_MAILER }}
           #MAIL_HOST=${{ secrets.MAIL_HOST }}
           #MAIL_PORT=${{ secrets.MAIL_PORT }}
           #MAIL_USERNAME=${{ secrets.MAIL_USERNAME }}
           #MAIL_PASSWORD=${{ secrets.MAIL_PASSWORD }}
           #MAIL_ENCRYPTION=${{ secrets.MAIL_ENCRYPTION }}
-          #MAIL_FROM_ADDRESS=${{ env.MAIL_FROM_ADDRESS }}
-          #MAIL_FROM_NAME="${{ env.MAIL_FROM_NAME }}"
+          #MAIL_FROM_ADDRESS=${{ vars.MAIL_FROM_ADDRESS }}
+          #MAIL_FROM_NAME="${{ vars.MAIL_FROM_NAME }}"
           EOF
 
       - name: Deploy via rsync
@@ -75,7 +75,7 @@ jobs:
         with:
           switches: -avz --exclude=".git" --exclude="storage/logs"
           path: .
-          remote_path: ${{ env.DEPLOY_PATH }}
+          remote_path: ${{ secrets.DEPLOY_PATH }}
           remote_host: ${{ secrets.HOSTINGER_HOST }}
           remote_port: ${{ secrets.HOSTINGER_PORT }}
           remote_user: ${{ secrets.HOSTINGER_USER }}
@@ -86,7 +86,7 @@ jobs:
           HOST: ${{ secrets.HOSTINGER_HOST }}
           PORT: ${{ secrets.HOSTINGER_PORT }}
           USER: ${{ secrets.HOSTINGER_USER }}
-          DEPLOY_PATH: ${{ env.DEPLOY_PATH }}
+          DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
         run: |
           ssh -p $PORT -i private_key -o StrictHostKeyChecking=no $USER@$HOST << 'EOF'
             cd $DEPLOY_PATH
