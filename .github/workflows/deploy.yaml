@@ -57,6 +57,12 @@ jobs:
           DB_USERNAME=${{ secrets.DB_USERNAME }}
           DB_PASSWORD=${{ secrets.DB_PASSWORD }}
 
+          SESSION_DRIVER=database
+          SESSION_LIFETIME=120
+          SESSION_ENCRYPT=false
+          SESSION_PATH=/
+          SESSION_DOMAIN=null
+
           BROADCAST_DRIVER=${{ vars.BROADCAST_DRIVER }}
           CACHE_DRIVER=${{ vars.CACHE_DRIVER }}
           QUEUE_CONNECTION=${{ vars.QUEUE_CONNECTION }}
