@@ -1,33 +1,43 @@
 <header class="bg-white border-b border-slate-200 fixed w-full z-10">
     <div class="max-w-6xl mx-auto flex h-16">
         <!-- Logo -->
-        <div class="m-2 self-center">
-            <div class="bg-indigo-600 rounded-sm aspect-square p-2">
-                <a href="{{route('home')}}">
-                    <img src="{{ asset('images/fpa-logo-white.png') }}"
-                         alt="FPA Logo"
-                         class="object-cover h-10 w-10"
-                    />
-                </a>
+        <a href="{{route('home')}}">
+            <div class="bg-indigo-600 aspect-square p-2">
+                <img src="{{ asset('images/fpa-logo-white.png') }}"
+                     alt="FPA Logo"
+                     class="object-cover h-12 w-12"
+                />
             </div>
-        </div>
+        </a>
 
         <!-- Navigation Menu -->
-        <nav class="grow flex gap-4 justify-between items-center pl-4">
-            <div class="grow flex gap-4 h-full">
-                <x-nav-link :href="route('home')" :active="request()->routeIs('home')">
-                    {{ __('Event Calendar') }}
-                </x-nav-link>
+        <nav class="grow flex gap-8 justify-between items-center pl-8">
+            <div class="grow flex items-end gap-8 h-full">
+                <a href="/"
+                   class="border-b-2"
+                   wire:navigate
+                   wire:current.exact="border-indigo-400">
+                   <div class="flex flex-col items-center pb-1">
+                       <div><x-heroicon-o-calendar-days class="h-8"/></div>
+                       <span class="text-sm">{{ __('Calendar') }}</span>
+                   </div>
+                </a>
                 @if(Auth::user())
-                    <x-nav-link class="hidden md:flex" :href="route('dashboard')"
-                                :active="request()->routeIs('dashboard')">
-                        {{ __('My Events') }}
-                    </x-nav-link>
+                    <a href="{{ route('dashboard') }}"
+                       class="border-b-2"
+                       wire:navigate
+                       wire:current.exact="border-indigo-400">
+                        <div class="flex flex-col items-center pb-1">
+                            <div><x-heroicon-o-home-modern class="h-8"/></div>
+                            <span class="text-sm">{{ __('My Space') }}</span>
+                        </div>
+                    </a>
                 @endif
             </div>
 
             <x-link href="{{ route('events.create') }}" class="hidden md:flex h-8">
-                {{ __('Add Event') }}
+                <div class="flex gap-2">
+                    <x-heroicon-c-plus class="h-4"/>{{ __('Add Event') }}</div>
             </x-link>
             @if(!Auth::user())
                 <x-link href="{{ route('login') }}" class="hidden md:flex h-8">
@@ -56,15 +66,17 @@
                 <!-- Navigation Menu Dropdown -->
                 <div :class="{'block': open, 'hidden': ! open}"
                      class="bg-white border rounded-md w-64 absolute right-0 top-0 pt-12"
-                    x-transition>
+                     x-cloak>
                     <div class="pt-2 pb-3 space-y-1">
-                        <x-responsive-nav-link :href="route('events.index')"
-                                               :active="request()->routeIs('home')">
+                        <x-responsive-nav-link
+                                :href="route('events.index')"
+                                :active="request()->routeIs('home')">
                             {{ __('Event Calendar') }}
                         </x-responsive-nav-link>
                         @if(Auth::user())
-                            <x-responsive-nav-link :href="route('dashboard')"
-                                                   :active="request()->routeIs('dashboard')">
+                            <x-responsive-nav-link
+                                    :href="route('dashboard')"
+                                    :active="request()->routeIs('dashboard')">
                                 {{ __('My Events') }}
                             </x-responsive-nav-link>
                         @endif

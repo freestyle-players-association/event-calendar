@@ -21,6 +21,8 @@
             </div>
         </div>
         <hr class="w-full h-px my-8 bg-slate-200 border-0">
+        <livewire:event-attend-buttons :event="$event"/>
+        <hr class="w-full h-px my-8 bg-slate-200 border-0">
         <x-event-buttons :event="$event"/>
         <div>{!! $event->description !!}</div>
     </div>

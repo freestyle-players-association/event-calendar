@@ -14,21 +14,22 @@
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <x-rich-text::styles theme="richtextlaravel" data-turbo-track="false"/>
+    @livewireStyles
 </head>
-<body class="font-sans antialiased bg-gradient-to-b from-white to-primary-50">
-    <div class="min-h-screen flex flex-col">
-        <x-flash-messages/>
-        @include('layouts.navigation')
-        <main class="grow pt-16">
-            @isset($banner)
-                {{ $banner }}
-            @endisset
-            <section class="max-w-6xl mx-auto px-4 py-4 pb-8 sm:px-6 lg:px-8">
-                {{ $slot }}
-            </section>
-        </main>
-
-        <x-footer/>
-    </div>
+<body class="font-sans antialiased bg-gradient-to-b from-white to-indigo-50">
+<div class="min-h-screen flex flex-col">
+    <x-flash-messages/>
+    @include('layouts.navigation')
+    <main class="grow pt-24">
+        @isset($banner)
+            {{ $banner }}
+        @endisset
+        <section class="max-w-6xl mx-auto px-4 py-4 pb-8 sm:px-6 lg:px-8">
+            {{ $slot }}
+        </section>
+    </main>
+    <x-footer/>
+</div>
+@livewireScripts
 </body>
 </html>

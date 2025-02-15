@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Facades\Storage;
 use Tonysm\RichTextLaravel\Models\Traits\HasRichText;
 
@@ -16,6 +17,9 @@ class Event extends Model
 {
     /** @use HasFactory<\Database\Factories\EventFactory> */
     use HasFactory, HasUuids, HasRichText;
+
+    public static string $interested = 'interested';
+    public static string $attending = 'attending';
 
     protected $guarded = ['id', 'user_id'];
 
@@ -105,6 +109,26 @@ class Event extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function users(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class)->withPivot('status');
+    }
+
+    public function interested(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class)->wherePivot('status', self::$interested);
+    }
+
+    public function attending(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class)->wherePivot('status', self::$attending);
+    }
+
+    public function status(User $user): string
+    {
+        return $this->users()->where('user_id', $user->id)->first()?->pivot->status ?? '';
     }
 
     public function getRouteKeyName(): string
