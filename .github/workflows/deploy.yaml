@@ -69,6 +69,7 @@ jobs:
           #MAIL_FROM_ADDRESS=${{ vars.MAIL_FROM_ADDRESS }}
           #MAIL_FROM_NAME="${{ vars.MAIL_FROM_NAME }}"
           EOF
+          chmod 600 .env
 
       - name: Deploy via rsync
         uses: burnett01/rsync-deployments@7.0.2
@@ -82,15 +83,14 @@ jobs:
           remote_key: ${{ secrets.SSH_PRIVATE_KEY }}
 
       - name: Run Laravel setup on server
-        env:
-          HOST: ${{ secrets.HOSTINGER_HOST }}
-          PORT: ${{ secrets.HOSTINGER_PORT }}
-          USER: ${{ secrets.HOSTINGER_USER }}
-          DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
-        run: |
-          ssh -p $PORT -i private_key -o StrictHostKeyChecking=no $USER@$HOST << 'EOF'
-            cd $DEPLOY_PATH
-            chmod 600 .env
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.HOSTINGER_HOST }}
+          port: ${{ secrets.HOSTINGER_PORT }}
+          username: ${{ secrets.HOSTINGER_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd ${{ secrets.DEPLOY_PATH }}
             php artisan migrate --force
             php artisan cache:clear
             php artisan config:clear
@@ -99,4 +99,3 @@ jobs:
             php artisan view:cache
             php artisan storage:link
             chmod -R 775 storage bootstrap/cache
-          EOF
