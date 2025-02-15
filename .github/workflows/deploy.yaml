@@ -44,8 +44,8 @@ jobs:
           APP_DEBUG=${{ vars.APP_DEBUG }}
           APP_URL=${{ vars.APP_URL }}
 
-          NOCAPTCHA_SITEKEY=${{ vars.RECAPTCHA_SITEKEY }}
-          NOCAPTCHA_SECRET=${{ vars.RECAPTCHA_SECRET }}
+          NOCAPTCHA_SITEKEY=${{ secret.RECAPTCHA_SITEKEY }}
+          NOCAPTCHA_SECRET=${{ secret.RECAPTCHA_SECRET }}
 
           LOG_CHANNEL=${{ vars.LOG_CHANNEL }}
           LOG_LEVEL=${{ vars.LOG_LEVEL }}
