@@ -8,6 +8,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    environment: production
 
     steps:
       - name: Checkout repository
@@ -21,7 +22,7 @@ jobs:
 
       - name: Install dependencies and build assets
         run: |
-          npm install
+          npm ci
           npm run build
 
       - name: Set up PHP
