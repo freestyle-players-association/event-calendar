@@ -71,6 +71,10 @@ jobs:
           EOF
           chmod 600 .env
 
+      - name: replace htaccess
+        run: |
+          cp source/.htaccess_hostinger source/.htaccess
+
       - name: Deploy via rsync
         uses: burnett01/rsync-deployments@7.0.2
         with:
