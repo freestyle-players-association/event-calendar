@@ -70,28 +70,22 @@ jobs:
           EOF
 
       - name: Deploy via rsync
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          HOST: ${{ secrets.HOSTINGER_HOST }}
-          PORT: ${{ secrets.HOSTINGER_PORT }}
-          USER: ${{ secrets.HOSTINGER_USER }}
-          DEPLOY_PATH: "${{ vars.DEPLOY_PATH }}"
         uses: burnett01/rsync-deployments@7.0.2
         with:
           switches: -avz --exclude=".git" --exclude="storage/logs"
           path: .
-          remote_path: $PATH
-          remote_host: $HOST
-          remote_port: $PORT
-          remote_user: $USER
-          remote_key: $SSH_PRIVATE_KEY
+          remote_path: ${{ vars.DEPLOY_PATH }}
+          remote_host: ${{ secrets.HOSTINGER_HOST }}
+          remote_port: ${{ secrets.HOSTINGER_PORT }}
+          remote_user: ${{ secrets.HOSTINGER_USER }}
+          remote_key: ${{ secrets.SSH_PRIVATE_KEY }}
 
       - name: Run Laravel setup on server
         env:
           HOST: ${{ secrets.HOSTINGER_HOST }}
           PORT: ${{ secrets.HOSTINGER_PORT }}
           USER: ${{ secrets.HOSTINGER_USER }}
-          DEPLOY_PATH: "${{ vars.DEPLOY_PATH }}"
+          DEPLOY_PATH: ${{ vars.DEPLOY_PATH }}
         run: |
           ssh -p $PORT -i private_key -o StrictHostKeyChecking=no $USER@$HOST << 'EOF'
             cd $DEPLOY_PATH
