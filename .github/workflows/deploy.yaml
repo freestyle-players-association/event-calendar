@@ -73,7 +73,7 @@ jobs:
 
       - name: replace htaccess
         run: |
-          cp source/.htaccess_hostinger source/.htaccess
+          cp public/.htaccess_hostinger public/.htaccess
 
       - name: Deploy via rsync
         uses: burnett01/rsync-deployments@7.0.2
