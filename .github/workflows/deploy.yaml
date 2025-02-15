@@ -76,14 +76,15 @@ jobs:
           PORT: ${{ secrets.HOSTINGER_PORT }}
           USER: ${{ secrets.HOSTINGER_USER }}
           DEPLOY_PATH: "${{ vars.DEPLOY_PATH }}"
-        run: |
-          eval "$(ssh-agent -s)"
-          echo "$SSH_PRIVATE_KEY" | ssh-add -
-          rsync -avz \
-            --exclude=".git" \
-            --exclude="storage/logs" \
-            -e "ssh -p $PORT -o StrictHostKeyChecking=no" . $USER@$HOST:$DEPLOY_PATH
-          ssh-agent -k
+        uses: burnett01/rsync-deployments@7.0.2
+        with:
+          switches: -avz --exclude=".git" --exclude="storage/logs"
+          path: .
+          remote_path: $PATH
+          remote_host: $HOST
+          remote_port: $PORT
+          remote_user: $USER
+          remote_key: $SSH_PRIVATE_KEY
 
       - name: Run Laravel setup on server
         env:
