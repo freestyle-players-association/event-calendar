@@ -42,13 +42,28 @@ jobs:
           APP_ENV=${{ vars.APP_ENV }}
           APP_KEY=${{ secrets.APP_KEY }}
           APP_DEBUG=${{ vars.APP_DEBUG }}
+          APP_TIMEZONE=UTC
           APP_URL=${{ vars.APP_URL }}
 
           NOCAPTCHA_SITEKEY=${{ secrets.RECAPTCHA_SITEKEY }}
           NOCAPTCHA_SECRET=${{ secrets.RECAPTCHA_SECRET }}
 
+          CONTACT_RECEIVER_EMAIL=events@freestyledisc.org
+
+          APP_LOCALE=en
+          APP_FALLBACK_LOCALE=en
+          APP_FAKER_LOCALE=en_US
+
+          APP_MAINTENANCE_DRIVER=file
+
+          PHP_CLI_SERVER_WORKERS=4
+
+          BCRYPT_ROUNDS=12
+
           LOG_CHANNEL=${{ vars.LOG_CHANNEL }}
           LOG_LEVEL=${{ vars.LOG_LEVEL }}
+          LOG_STACK=single
+          LOG_DEPRECATIONS_CHANNEL=null
 
           DB_CONNECTION=${{ vars.DB_CONNECTION }}
           DB_HOST=${{ secrets.DB_HOST }}
@@ -77,6 +92,8 @@ jobs:
           #MAIL_ENCRYPTION=${{ secrets.MAIL_ENCRYPTION }}
           #MAIL_FROM_ADDRESS=${{ vars.MAIL_FROM_ADDRESS }}
           #MAIL_FROM_NAME="${{ vars.MAIL_FROM_NAME }}"
+
+          VITE_APP_NAME=${{ vars.APP_NAME }}
           EOF
           chmod 600 .env
 
