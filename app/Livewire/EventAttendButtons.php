@@ -13,7 +13,7 @@ class EventAttendButtons extends Component
     public function mount(Event $event)
     {
         $this->event = $event;
-        $this->status = auth()->user()->exists() ? $event->status(auth()->user()) : '';
+        $this->status = auth()->user() ? $event->status(auth()->user()) : '';
     }
 
     public function render()
