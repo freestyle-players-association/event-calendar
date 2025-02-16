@@ -17,10 +17,12 @@
                    class="border-b-2"
                    wire:navigate
                    wire:current.exact="border-primary-400">
-                   <div class="flex flex-col items-center pb-1">
-                       <div><x-heroicon-o-calendar-days class="h-8"/></div>
-                       <span class="text-sm">{{ __('Calendar') }}</span>
-                   </div>
+                    <div class="flex flex-col items-center pb-1">
+                        <div>
+                            <x-heroicon-o-calendar-days class="h-8"/>
+                        </div>
+                        <span class="text-sm">{{ __('Calendar') }}</span>
+                    </div>
                 </a>
                 @if(Auth::user())
                     <a href="{{ route('dashboard') }}"
@@ -28,7 +30,9 @@
                        wire:navigate
                        wire:current.exact="border-primary-400">
                         <div class="flex flex-col items-center pb-1">
-                            <div><x-heroicon-o-home-modern class="h-8"/></div>
+                            <div>
+                                <x-heroicon-o-home-modern class="h-8"/>
+                            </div>
                             <span class="text-sm">{{ __('My Space') }}</span>
                         </div>
                     </a>
@@ -69,14 +73,14 @@
                      x-cloak>
                     <div class="pt-2 pb-3 space-y-1">
                         <x-responsive-nav-link
-                                :href="route('events.index')"
-                                :active="request()->routeIs('home')">
+                            :href="route('events.index')"
+                            :active="request()->routeIs('home')">
                             {{ __('Event Calendar') }}
                         </x-responsive-nav-link>
                         @if(Auth::user())
                             <x-responsive-nav-link
-                                    :href="route('dashboard')"
-                                    :active="request()->routeIs('dashboard')">
+                                :href="route('dashboard')"
+                                :active="request()->routeIs('dashboard')">
                                 {{ __('My Events') }}
                             </x-responsive-nav-link>
                         @endif
@@ -86,6 +90,9 @@
                     <div class="pt-4 pb-1 border-t border-gray-200">
                         <div class="mt-3 space-y-1">
                             @if(Auth::user())
+                                <x-responsive-nav-link class="md:hidden" :href="route('events.create')">
+                                    {{ __('Add Event') }}
+                                </x-responsive-nav-link>
                                 <x-responsive-nav-link :href="route('profile.edit')">
                                     {{ __('Profile') }}
                                 </x-responsive-nav-link>
@@ -93,10 +100,9 @@
                                 <!-- Authentication -->
                                 <form method="POST" action="{{ route('logout') }}">
                                     @csrf
-
-                                    <x-responsive-nav-link :href="route('logout')"
-                                                           onclick="event.preventDefault();
-                                                                    this.closest('form').submit();">
+                                    <x-responsive-nav-link
+                                        :href="route('logout')"
+                                        onclick="event.preventDefault(); this.closest('form').submit();">
                                         {{ __('Log Out') }}
                                     </x-responsive-nav-link>
                                 </form>

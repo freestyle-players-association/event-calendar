@@ -10,6 +10,7 @@ class DashboardController extends Controller
     {
         return view('profile.dashboard', [
             'events' => auth()->user()->events()->get(),
+            'attending' => auth()->user()->attendingEvents()->get(),
         ]);
     }
 }
