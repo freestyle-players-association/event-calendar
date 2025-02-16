@@ -105,7 +105,7 @@ jobs:
       - name: Deploy via rsync
         uses: burnett01/rsync-deployments@7.0.2
         with:
-          switches: -avz --delete --exclude="tests" --exclude=".git" --exclude="storage/logs" --exclude="public/storage"
+          switches: -avz --delete --exclude="tests" --exclude=".git" --exclude="storage/logs" --exclude="public/storage" --exclude="storage/app"
           path: .
           remote_path: ${{ secrets.DEPLOY_PATH }}
           remote_host: ${{ secrets.HOSTINGER_HOST }}
