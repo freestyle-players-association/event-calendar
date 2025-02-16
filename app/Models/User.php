@@ -6,6 +6,7 @@ namespace App\Models;
 use App\Core\UserRole;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -54,14 +55,14 @@ class User extends Authenticatable
         return $this->hasMany(Event::class);
     }
 
-    public function interestedEvents(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    public function interestedEvents(): BelongsToMany
     {
         return $this->belongsToMany(Event::class)
             ->wherePivotIn('status', [Event::$interested, Event::$attending])
             ->where('events.user_id', '!=', $this->id);
     }
 
-    public function attendingEvents(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    public function attendingEvents(): BelongsToMany
     {
         return $this->belongsToMany(Event::class)
             ->wherePivot('status', Event::$attending)

@@ -11,14 +11,7 @@
     <div class="border rounded-lg shadow-md p-4 bg-white">
         <h1 class="text-2xl font-bold pb-8">{{ $event->name }}</h1>
         <div class="flex justify-between gap-4">
-            <div class="grow">
-                <p class="flex gap-2 items-center text-slate-500">
-                    <x-heroicon-o-calendar-days class="h-5"/>{{ $event->date_range_full }}
-                </p>
-                <p class="flex gap-2 items-center text-slate-500">
-                    <x-heroicon-o-map-pin class="h-5"/>{{ $event->location }}
-                </p>
-            </div>
+            <livewire:event-infos :event="$event"/>
         </div>
         <hr class="w-full h-px my-8 bg-slate-200 border-0">
         <livewire:event-attend-buttons :event="$event"/>
