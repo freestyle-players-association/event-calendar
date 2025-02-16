@@ -2,7 +2,7 @@
     <div class="max-w-6xl mx-auto flex h-16">
         <!-- Logo -->
         <a href="{{route('home')}}">
-            <div class="bg-indigo-600 aspect-square p-2">
+            <div class="bg-primary-600 aspect-square p-2">
                 <img src="{{ asset('images/fpa-logo-white.png') }}"
                      alt="FPA Logo"
                      class="object-cover h-12 w-12"
@@ -16,7 +16,7 @@
                 <a href="/"
                    class="border-b-2"
                    wire:navigate
-                   wire:current.exact="border-indigo-400">
+                   wire:current.exact="border-primary-400">
                    <div class="flex flex-col items-center pb-1">
                        <div><x-heroicon-o-calendar-days class="h-8"/></div>
                        <span class="text-sm">{{ __('Calendar') }}</span>
@@ -26,7 +26,7 @@
                     <a href="{{ route('dashboard') }}"
                        class="border-b-2"
                        wire:navigate
-                       wire:current.exact="border-indigo-400">
+                       wire:current.exact="border-primary-400">
                         <div class="flex flex-col items-center pb-1">
                             <div><x-heroicon-o-home-modern class="h-8"/></div>
                             <span class="text-sm">{{ __('My Space') }}</span>

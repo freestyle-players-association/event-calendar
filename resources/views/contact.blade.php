@@ -26,7 +26,7 @@
 
         <div class="mb-4">
             <label for="body" class="block text-sm font-medium text-gray-700">{{ __('Message') }}</label>
-            <textarea id="body" name="body" rows="4" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm mt-1 block w-full" required></textarea>
+            <textarea id="body" name="body" rows="4" class="border-gray-300 focus:border-primary-500 focus:ring-primary-500 rounded-md shadow-sm mt-1 block w-full" required></textarea>
             @error('body')
             <x-input-error :messages="$errors->first('body')" />
             @enderror

@@ -16,7 +16,7 @@
     <x-rich-text::styles theme="richtextlaravel" data-turbo-track="false"/>
     @livewireStyles
 </head>
-<body class="font-sans antialiased bg-gradient-to-b from-white to-indigo-50">
+<body class="font-sans antialiased bg-gradient-to-b from-white to-primary-50">
 <div class="min-h-screen flex flex-col">
     <x-flash-messages/>
     @include('layouts.navigation')
