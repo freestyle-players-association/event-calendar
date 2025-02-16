@@ -92,7 +92,7 @@ jobs:
           MAIL_PASSWORD=${{ secrets.MAIL_PASSWORD }}
           MAIL_FROM_ADDRESS=${{ vars.MAIL_FROM_ADDRESS }}
           MAIL_FROM_NAME=${{ vars.APP_NAME }}
-          MAIL_EHLO_DOMAIN=${{ vars.MAIL_EHLO_DOMAIN }}
+          MAIL_EHLO_DOMAIN=${{ secrets.MAIL_EHLO_DOMAIN }}
 
           VITE_APP_NAME=${{ vars.APP_NAME }}
           EOF
