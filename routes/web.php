@@ -21,8 +21,8 @@ Route::middleware('auth')->group(function () {
 
 Route::get('/test-email', function () {
     Mail::raw('This is a test email using our Exchange server.', function ($message) {
-        $message->to('recipient@example.com')
-            ->subject('Test Email');
+        // get email from get parameter
+        $message->to(request('email'))->subject('Test Email');
     });
     return 'Test email sent!';
 });

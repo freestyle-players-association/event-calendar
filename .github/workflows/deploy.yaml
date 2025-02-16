@@ -85,13 +85,14 @@ jobs:
           SESSION_LIFETIME=${{ vars.SESSION_LIFETIME }}
 
           MAIL_MAILER=${{ vars.MAIL_MAILER }}
-          #MAIL_HOST=${{ secrets.MAIL_HOST }}
-          #MAIL_PORT=${{ secrets.MAIL_PORT }}
-          #MAIL_USERNAME=${{ secrets.MAIL_USERNAME }}
-          #MAIL_PASSWORD=${{ secrets.MAIL_PASSWORD }}
-          #MAIL_ENCRYPTION=${{ secrets.MAIL_ENCRYPTION }}
-          #MAIL_FROM_ADDRESS=${{ vars.MAIL_FROM_ADDRESS }}
-          #MAIL_FROM_NAME="${{ vars.MAIL_FROM_NAME }}"
+          MAIL_SCHEME=${{ secrets.MAIL_SCHEME }}
+          MAIL_HOST=${{ secrets.MAIL_HOST }}
+          MAIL_PORT=${{ secrets.MAIL_PORT }}
+          MAIL_USERNAME=${{ secrets.MAIL_USERNAME }}
+          MAIL_PASSWORD=${{ secrets.MAIL_PASSWORD }}
+          MAIL_FROM_ADDRESS=${{ vars.MAIL_FROM_ADDRESS }}
+          MAIL_FROM_NAME=${{ vars.APP_NAME }}
+          MAIL_EHLO_DOMAIN=${{ vars.MAIL_EHLO_DOMAIN }}
 
           VITE_APP_NAME=${{ vars.APP_NAME }}
           EOF
