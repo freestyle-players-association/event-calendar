@@ -64,6 +64,17 @@ class Event extends Model
         );
     }
 
+    public function getBannerWidthHeight(): array
+    {
+        if ($this->banner) {
+            $path = storage_path('app/public/banners/'.$this->banner);
+            [$width, $height] = getimagesize($path);
+            return [$width, $height];
+        }
+
+        return [0, 0];
+    }
+
     public function iconUrl(): Attribute
     {
         return Attribute::make(

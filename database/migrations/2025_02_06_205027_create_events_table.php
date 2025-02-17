@@ -15,7 +15,7 @@ return new class extends Migration
             $table->ulid('id')->primary();
             $table->foreignIdFor(\App\Models\User::class);
             $table->string('name');
-            $table->string('slug')->unique();
+            $table->string('slug');
             $table->date('start_date');
             $table->date('end_date');
             $table->string('location');

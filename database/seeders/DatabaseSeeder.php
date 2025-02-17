@@ -19,8 +19,18 @@ class DatabaseSeeder extends Seeder
             'email' => 'test@example.com',
         ]);
 
-        User::factory(4)->create();
+        User::factory(50)->create();
 
         Event::factory(20)->create();
+
+        // create "interested" and "attending" relationships
+        $events = Event::all();
+        $users = User::all();
+        foreach ($events as $event) {
+            $interested = $users->random(random_int(1, 30));
+            $attending = $users->random(random_int(1, 20));
+            $event->users()->attach($interested, ['status' => Event::$interested]);
+            $event->users()->attach($attending, ['status' => Event::$attending]);
+        }
     }
 }

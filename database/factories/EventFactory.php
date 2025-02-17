@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Core\LoremPicsum;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -34,6 +35,8 @@ class EventFactory extends Factory
             'start_date' => $startDate->format('Y-m-d'),
             'end_date' => $endDate->format('Y-m-d'),
             'location' => fake()->city(),
+            'banner' => LoremPicsum::getBanner(),
+            'icon' => LoremPicsum::getIcon(),
         ];
     }
 }

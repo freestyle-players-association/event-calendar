@@ -1,9 +1,14 @@
 <x-app-layout>
     <x-slot name="banner">
         @if($event->banner)
+            @php
+               [$width, $height] = $event->getBannerWidthHeight();
+            @endphp
             <img
                 src="{{ $event->banner_url }}"
                 alt="{{ $event->name }}"
+                width="{{ $width }}"
+                height="{{ $height }}"
                 class="w-full object-cover">
         @endif
     </x-slot>

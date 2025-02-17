@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignIdFor(\App\Models\Event::class);
             $table->foreignIdFor(User::class);
             $table->string('status');
+            $table->index(['event_id', 'user_id']);
             $table->timestamps();
         });
     }
@@ -26,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::dropIfExists('event_user');
     }
 };
