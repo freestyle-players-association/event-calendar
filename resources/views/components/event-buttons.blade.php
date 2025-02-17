@@ -34,5 +34,5 @@
             </x-modal>
         @endif
     </div>
-    <hr class="w-full h-px my-8 bg-slate-200 border-0">
+    <hr class="w-full h-px my-6 bg-slate-200 border-0">
 @endif

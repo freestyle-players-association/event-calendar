@@ -1,4 +1,4 @@
-<a wire:navigate href="{{ route('events.show', $event) }}" class="bg-white hover:bg-slate-50">
+<a wire:navigate href="{{ route('events.show', ['event' => $event, 'slug' => $event->slug]) }}" class="bg-white hover:bg-slate-50">
     <article class="border p-4 rounded-md shadow-md h-full flex flex-col justify-between">
         <x-h2 class="pb-2">{{ $event->name }}</x-h2>
         <div class="flex justify-between items-center gap-4 pt-2">

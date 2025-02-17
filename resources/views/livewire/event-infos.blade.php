@@ -1,4 +1,4 @@
-<div class="grow">
+<div class="flex flex-col justify-between mb-4">
     <p class="flex gap-2 items-center text-slate-500">
         <x-heroicon-o-calendar-days class="h-5"/>{{ $event->date_range_full }}
     </p>

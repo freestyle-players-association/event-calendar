@@ -6,6 +6,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>FPA Event Calendar</title>
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -20,7 +21,7 @@
 <div class="min-h-screen flex flex-col">
     <x-flash-messages/>
     @include('layouts.navigation')
-    <main class="grow pt-24">
+    <main class="grow pt-16">
         @isset($banner)
             {{ $banner }}
         @endisset

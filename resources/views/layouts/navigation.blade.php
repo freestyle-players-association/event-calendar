@@ -2,7 +2,7 @@
     <div class="max-w-6xl mx-auto flex h-16">
         <!-- Logo -->
         <a href="{{route('home')}}">
-            <div class="bg-primary-600 aspect-square p-2">
+            <div class="bg-primary-500 aspect-square p-2">
                 <img src="{{ asset('images/fpa-logo-white.png') }}"
                      alt="FPA Logo"
                      class="object-cover h-12 w-12"
@@ -16,10 +16,10 @@
                 <a href="/"
                    class="border-b-2"
                    wire:navigate
-                   wire:current.exact="border-primary-400">
+                   wire:current.exact="border-secondary-900">
                     <div class="flex flex-col items-center pb-1">
                         <div>
-                            <x-heroicon-o-calendar-days class="h-8"/>
+                            <x-heroicon-o-calendar-days class="h-8 text-secondary-900"/>
                         </div>
                         <span class="text-sm">{{ __('Calendar') }}</span>
                     </div>
@@ -28,14 +28,27 @@
                     <a href="{{ route('dashboard') }}"
                        class="border-b-2"
                        wire:navigate
-                       wire:current.exact="border-primary-400">
+                       wire:current.exact="border-secondary-900">
                         <div class="flex flex-col items-center pb-1">
                             <div>
-                                <x-heroicon-o-home-modern class="h-8"/>
+                                <x-heroicon-o-home-modern class="h-8 text-secondary-900"/>
                             </div>
                             <span class="text-sm">{{ __('My Space') }}</span>
                         </div>
                     </a>
+                    @if(Auth::user()->isAdmin())
+                        <a href="{{ route('admin') }}"
+                           class="border-b-2"
+                           wire:navigate
+                           wire:current.exact="border-secondary-900">
+                            <div class="flex flex-col items-center pb-1">
+                                <div>
+                                    <x-heroicon-o-exclamation-triangle class="h-8 text-secondary-900"/>
+                                </div>
+                                <span class="text-sm">{{ __('Admin') }}</span>
+                            </div>
+                        </a>
+                    @endif
                 @endif
             </div>
 
@@ -45,13 +58,13 @@
             </x-link>
             @if(!Auth::user())
                 <x-link href="{{ route('login') }}" class="hidden md:flex h-8">
-                    {{ __('Login') }}
+                    {{ __('Log in') }}
                 </x-link>
             @endif
             <div class="relative flex items-center" x-data="{ open: false }" @click.away="open = false">
                 <!-- Hamburger Button -->
                 <button @click="open = ! open"
-                        class="inline-flex p-2 mr-4 sm:mr-0 rounded-md text-slate-800
+                        class="inline-flex p-2 mr-4 sm:mr-0 rounded-md text-secondary-900
                                hover:bg-gray-100
                                z-10
                                transition duration-150 ease-in-out">

@@ -9,7 +9,7 @@ return new class extends Migration {
     {
         Schema::create('rich_texts', function (Blueprint $table) {
             $table->id();
-            $table->uuidMorphs('record');
+            $table->ulidMorphs('record');
             $table->string('field');
             $table->longText('body')->nullable();
             $table->timestamps();

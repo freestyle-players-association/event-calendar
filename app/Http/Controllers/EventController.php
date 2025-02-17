@@ -81,11 +81,17 @@ class EventController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Event $event)
+    public function show(Event $event, $slug = null)
     {
-        return view('events.event', [
-            'event' => $event,
-        ]);
+        // If the slug is missing or outdated, redirect to the correct URL
+        if ($slug !== $event->slug) {
+            return redirect()->route('events.show', [
+                'event' => $event->id,
+                'slug'  => $event->slug,
+            ], 301);
+        }
+
+        return view('events.event', compact('event'));
     }
 
     /**
@@ -140,16 +146,7 @@ class EventController extends Controller
             ])->with('error', 'You do not have permission to delete this event.');
         }
 
-        if ($event->banner) {
-            unlink(storage_path('app/public/banners/'.$event->banner));
-        }
-
-        if ($event->icon) {
-            unlink(storage_path('app/public/icons/'.$event->icon));
-        }
-
         $event->delete();
-
         return redirect()->route('events.index')->with('success', 'Event deleted.');
     }
 }

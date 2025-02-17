@@ -3,7 +3,7 @@
         <x-h1>Events in {{ $year }}</x-h1>
         @foreach($months as $month => $events)
             <section class="my-4">
-                <div class="flex gap-4 items-center my-4">
+                <div class="flex gap-4 items-center my-8">
                     <hr class="w-full h-px bg-slate-500 border-0 ">
                     <x-h2>{{ $month }}</x-h2>
                     <hr class="w-full h-px bg-slate-500 border-0">

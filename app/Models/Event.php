@@ -5,7 +5,7 @@ namespace App\Models;
 use App\Core\LocaleDateFormatter;
 use App\Models\Scopes\OrderByStartAsc;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -16,7 +16,7 @@ use Tonysm\RichTextLaravel\Models\Traits\HasRichText;
 class Event extends Model
 {
     /** @use HasFactory<\Database\Factories\EventFactory> */
-    use HasFactory, HasUuids, HasRichText;
+    use HasFactory, HasUlids, HasRichText;
 
     public static string $interested = 'interested';
     public static string $attending = 'attending';
@@ -131,35 +131,26 @@ class Event extends Model
         return $this->users()->where('user_id', $user->id)->first()?->pivot->status ?? '';
     }
 
-    public function getRouteKeyName(): string
-    {
-        return 'slug';
-    }
-
     protected static function booted()
     {
         static::addGlobalScope(new OrderByStartAsc);
 
         static::creating(function ($model) {
-            $model->appendYearToSlug();
+            $model->slug = \Str::slug($model->name);
         });
 
         static::updating(function ($model) {
-            $model->appendYearToSlug();
+            $model->slug = \Str::slug($model->name);
         });
-    }
 
-    protected function appendYearToSlug(): void
-    {
-        $this->slug = \Str::slug($this->name);
-        $year = date('Y', strtotime($this->start_date));
-        // Check if the slug already ends with a 4-digit number
-        if (preg_match('/-\d{4}$/', $this->slug)) {
-            // Replace the year at the end of the slug
-            $this->slug = preg_replace('/-\d{4}$/', "-{$year}", $this->slug);
-        } else {
-            // Append the year to the slug
-            $this->slug = "{$this->slug}-{$year}";
-        }
+        static::deleted(function ($model) {
+            $model->users()->detach();
+            if ($model->banner) {
+                unlink(storage_path('app/public/banners/'.$model->banner));
+            }
+            if ($model->icon) {
+                unlink(storage_path('app/public/icons/'.$model->icon));
+            }
+        });
     }
 }
