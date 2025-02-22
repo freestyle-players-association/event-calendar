@@ -2,7 +2,8 @@
 
 namespace App\Models;
 
-use App\Core\UserRole;
+use App\Core\Enum\EventUserStatus;
+use App\Core\Enum\UserRole;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -24,6 +25,10 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+    ];
+
+    protected $casts = [
+        'role' => UserRole::class,
     ];
 
     /**
@@ -57,20 +62,20 @@ class User extends Authenticatable
     public function interestedEvents(): BelongsToMany
     {
         return $this->belongsToMany(Event::class)
-            ->wherePivotIn('status', [Event::$interested, Event::$attending])
+            ->wherePivotIn('status', [EventUserStatus::INTERESTED, EventUserStatus::ATTENDING])
             ->where('events.user_id', '!=', $this->id);
     }
 
     public function attendingEvents(): BelongsToMany
     {
         return $this->belongsToMany(Event::class)
-            ->wherePivot('status', Event::$attending)
+            ->wherePivot('status', EventUserStatus::ATTENDING)
             ->where('events.user_id', '!=', $this->id);
     }
 
 
     public function isAdmin(): bool
     {
-        return $this->role === UserRole::ADMIN;
+        return $this->role->isAdmin();
     }
 }

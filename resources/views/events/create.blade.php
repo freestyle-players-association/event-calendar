@@ -30,6 +30,7 @@
                                           value="{{ old('name') }}"
                                           required
                                           autofocus />
+                            <x-input-error :messages="$errors->get('name')" class="mt-2" />
                         </div>
 
                         <!-- Start and End Date Fields -->
@@ -40,6 +41,7 @@
                                               name="start_date"
                                               x-model="startDate"
                                               required />
+                                <x-input-error :messages="$errors->get('start_date')" class="mt-2" />
                             </div>
                             <div class="mt-4">
                                 <x-input-label for="end_date" :value="__('End Date')" />
@@ -47,6 +49,7 @@
                                               name="end_date"
                                               x-model="endDate"
                                               required />
+                                <x-input-error :messages="$errors->get('end_date')" class="mt-2" />
                             </div>
                         </div>
 
@@ -59,6 +62,7 @@
                                           name="location"
                                           value="{{ old('location') }}"
                                           required />
+                            <x-input-error :messages="$errors->get('location')" class="mt-2" />
                         </div>
 
                         <!-- Description Field -->
@@ -67,6 +71,7 @@
                             <x-trix-input id="description"
                                           name="description"
                                           value="{{ old('description') }}" />
+                            <x-input-error :messages="$errors->get('description')" class="mt-2" />
                         </div>
 
                         <!-- Banner File Upload -->
@@ -77,6 +82,7 @@
                                    type="file"
                                    name="banner"
                                    accept="image/*">
+                            <x-input-error :messages="$errors->get('banner')" class="mt-2" />
                         </div>
 
                         <!-- Icon File Upload -->
@@ -87,6 +93,7 @@
                                    type="file"
                                    name="icon"
                                    accept="image/*">
+                            <x-input-error :messages="$errors->get('icon')" class="mt-2" />
                         </div>
 
                         <!-- Submit Button -->

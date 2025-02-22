@@ -2,12 +2,12 @@
 
 namespace App\Console\Commands;
 
-use App\Core\UserRole;
+use App\Core\Enum\UserRole;
 use App\Models\User;
 use Illuminate\Console\Command;
-use function Laravel\Prompts\select;
-use function Laravel\Prompts\text;
 use function Laravel\Prompts\search;
+use function Laravel\Prompts\select;
+
 class AdminConfiguration extends Command
 {
     /**
@@ -49,6 +49,10 @@ class AdminConfiguration extends Command
                     break;
                 case 'list':
                     $admins = User::where('role', UserRole::ADMIN)->get();
+                    if (count($admins) === 0) {
+                        $this->info('No admins found');
+                        break;
+                    }
                     $this->info('Admins:');
                     $this->table(['ID', 'Name', 'Email'], $admins->map(fn(User $user) => [$user->id, $user->name, $user->email]));
                     break;
@@ -61,6 +65,10 @@ class AdminConfiguration extends Command
     private function removeAdmin(): void
     {
         $users = User::where('role', UserRole::ADMIN)->get();
+        if (count($users) === 0) {
+            $this->info('No admins found');
+            return;
+        }
         $userId = select(
             label: 'Select the user to remove the admin role',
             options: $users->pluck('name', 'id')->all()

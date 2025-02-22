@@ -1,4 +1,4 @@
-<header class="bg-white border-b border-slate-200 fixed w-full z-10">
+<header class="bg-white fixed w-full z-10">
     <div class="max-w-6xl mx-auto flex h-16">
         <!-- Logo -->
         <a href="{{route('home')}}">
@@ -11,43 +11,13 @@
         </a>
 
         <!-- Navigation Menu -->
-        <nav class="grow flex gap-8 justify-between items-center pl-8">
-            <div class="grow flex items-end gap-8 h-full">
-                <a href="/"
-                   class="border-b-2"
-                   wire:navigate
-                   wire:current.exact="border-secondary-900">
-                    <div class="flex flex-col items-center pb-1">
-                        <div>
-                            <x-heroicon-o-calendar-days class="h-8 text-secondary-900"/>
-                        </div>
-                        <span class="text-sm">{{ __('Calendar') }}</span>
-                    </div>
-                </a>
+        <nav class="grow flex gap-4 md:gap-8 justify-between items-center pl-4 md:pl-8">
+            <div class="grow flex items-end gap-4 md:gap-8 h-full">
+                <x-nav-link href="/" icon="heroicon-o-calendar-days" label="Calendar"/>
                 @if(Auth::user())
-                    <a href="{{ route('dashboard') }}"
-                       class="border-b-2"
-                       wire:navigate
-                       wire:current.exact="border-secondary-900">
-                        <div class="flex flex-col items-center pb-1">
-                            <div>
-                                <x-heroicon-o-home-modern class="h-8 text-secondary-900"/>
-                            </div>
-                            <span class="text-sm">{{ __('My Space') }}</span>
-                        </div>
-                    </a>
+                    <x-nav-link href="{{ route('dashboard') }}" icon="heroicon-o-home-modern" label="My Space"/>
                     @if(Auth::user()->isAdmin())
-                        <a href="{{ route('admin') }}"
-                           class="border-b-2"
-                           wire:navigate
-                           wire:current.exact="border-secondary-900">
-                            <div class="flex flex-col items-center pb-1">
-                                <div>
-                                    <x-heroicon-o-exclamation-triangle class="h-8 text-secondary-900"/>
-                                </div>
-                                <span class="text-sm">{{ __('Admin') }}</span>
-                            </div>
-                        </a>
+                        <x-nav-link href="{{ route('admin') }}" icon="heroicon-o-exclamation-triangle" label="Admin"/>
                     @endif
                 @endif
             </div>
@@ -86,7 +56,7 @@
                      x-cloak>
                     <div class="pt-2 pb-3 space-y-1">
                         <x-responsive-nav-link
-                            :href="route('events.index')"
+                            :href="route('home')"
                             :active="request()->routeIs('home')">
                             {{ __('Event Calendar') }}
                         </x-responsive-nav-link>
@@ -94,8 +64,15 @@
                             <x-responsive-nav-link
                                 :href="route('dashboard')"
                                 :active="request()->routeIs('dashboard')">
-                                {{ __('My Events') }}
+                                {{ __('My Space') }}
                             </x-responsive-nav-link>
+                            @if(Auth::user()->isAdmin())
+                                <x-responsive-nav-link
+                                    :href="route('admin')"
+                                    :active="request()->routeIs('admin')">
+                                    {{ __('Admin') }}
+                                </x-responsive-nav-link>
+                            @endif
                         @endif
                     </div>
 

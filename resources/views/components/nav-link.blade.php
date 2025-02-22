@@ -1,11 +1,11 @@
-@props(['active'])
-
-@php
-$classes = ($active ?? false)
-            ? 'inline-flex items-center px-1 pt-1 border-b-2 border-primary-400 text-sm font-medium leading-5 text-slate-900 focus:outline-none focus:border-primary-700 transition duration-150 ease-in-out'
-            : 'inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-slate-500 hover:text-slate-700 hover:border-slate-300 focus:outline-none focus:text-slate-700 focus:border-slate-300 transition duration-150 ease-in-out';
-@endphp
-
-<a {{ $attributes->merge(['class' => $classes]) }}>
-    {{ $slot }}
+<a href="{{ $href }}"
+   class="border-b-2"
+   wire:navigate
+   wire:current.exact="border-secondary-900">
+    <div class="flex flex-col items-center pb-1">
+        <div>
+            <x-dynamic-component :component="$icon" class="h-8 text-secondary-900"/>
+        </div>
+        <span class="text-sm">{{ __($label) }}</span>
+    </div>
 </a>

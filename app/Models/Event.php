@@ -2,27 +2,28 @@
 
 namespace App\Models;
 
+use App\Core\Enum\AssetType;
+use App\Core\Enum\EventUserStatus;
 use App\Core\LocaleDateFormatter;
+use App\Core\Service\AssetManagerService;
 use App\Models\Scopes\OrderByStartAsc;
+use App\Observers\EventObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Support\Facades\Storage;
 use Tonysm\RichTextLaravel\Models\Traits\HasRichText;
 
+#[ObservedBy(EventObserver::class)]
 class Event extends Model
 {
     /** @use HasFactory<\Database\Factories\EventFactory> */
     use HasFactory, HasUlids, HasRichText;
 
-    public static string $interested = 'interested';
-    public static string $attending = 'attending';
-
-    protected $guarded = ['id', 'user_id'];
-
+    // add description manually so the rich text editor can save it
     protected $fillable = [
         'name',
         'start_date',
@@ -31,7 +32,7 @@ class Event extends Model
         'description',
         'banner',
         'icon',
-    ]; // add description manually so wysiwyg editor can save it
+    ];
 
     protected $richTextAttributes = [
         'description',
@@ -57,64 +58,38 @@ class Event extends Model
         );
     }
 
-    public function bannerUrl(): Attribute
+    public function getBannerUrlAttribute(): ?string
     {
-        return Attribute::make(
-            get: fn(mixed $value, array $attributes) => $attributes['banner'] ? asset(Storage::url('banners/'.$attributes['banner'])) : null,
-        );
+        return $this->banner
+            ? app(AssetManagerService::class)->url(AssetType::BANNER, $this->banner)
+            : null;
     }
 
     public function getBannerWidthHeight(): array
     {
-        if ($this->banner) {
-            $path = storage_path('app/public/banners/'.$this->banner);
-            [$width, $height] = getimagesize($path);
-            return [$width, $height];
-        }
-
-        return [0, 0];
+        return app(AssetManagerService::class)->dimensions(AssetType::BANNER, $this->banner);
     }
 
-    public function iconUrl(): Attribute
+    public function getIconUrlAttribute(): ?string
     {
-        return Attribute::make(
-            get: fn(mixed $value, array $attributes) => $attributes['icon'] ? asset(Storage::url('icons/'.$attributes['icon'])) : null,
-        );
+        return $this->icon
+            ? app(AssetManagerService::class)->url(AssetType::ICON, $this->icon)
+            : null;
     }
 
-    public function day(): Attribute
+    public function getDayAttribute(): string
     {
-        return Attribute::make(
-            get: fn(mixed $value, array $attributes) => date('j', strtotime($attributes['start_date'])),
-        );
+        return date('j', strtotime($this->start_date));
     }
 
-    public function month(): Attribute
+    public function getMonthAttribute(): string
     {
-        return Attribute::make(
-            get: fn(mixed $value, array $attributes) => date('F', strtotime($attributes['start_date'])),
-        );
+        return date('F', strtotime($this->start_date));
     }
 
-    public function year(): Attribute
+    public function getYearAttribute(): string
     {
-        return Attribute::make(
-            get: fn(mixed $value, array $attributes) => date('Y', strtotime($attributes['start_date'])),
-        );
-    }
-
-    public function startDate(): Attribute
-    {
-        return Attribute::make(
-            get: fn(string $value) => date('Y-m-d', strtotime($value)),
-        );
-    }
-
-    public function endDate(): Attribute
-    {
-        return Attribute::make(
-            get: fn(string $value) => date('Y-m-d', strtotime($value)),
-        );
+        return date('Y', strtotime($this->start_date));
     }
 
     public function user(): BelongsTo
@@ -129,12 +104,14 @@ class Event extends Model
 
     public function interested(): BelongsToMany
     {
-        return $this->belongsToMany(User::class)->wherePivot('status', self::$interested);
+        return $this->belongsToMany(User::class)
+            ->wherePivot('status', EventUserStatus::INTERESTED);
     }
 
     public function attending(): BelongsToMany
     {
-        return $this->belongsToMany(User::class)->wherePivot('status', self::$attending);
+        return $this->belongsToMany(User::class)
+            ->wherePivot('status', EventUserStatus::ATTENDING);
     }
 
     public function status(User $user): string
@@ -142,26 +119,8 @@ class Event extends Model
         return $this->users()->where('user_id', $user->id)->first()?->pivot->status ?? '';
     }
 
-    protected static function booted()
+    protected static function booted(): void
     {
         static::addGlobalScope(new OrderByStartAsc);
-
-        static::creating(function ($model) {
-            $model->slug = \Str::slug($model->name);
-        });
-
-        static::updating(function ($model) {
-            $model->slug = \Str::slug($model->name);
-        });
-
-        static::deleted(function ($model) {
-            $model->users()->detach();
-            if ($model->banner) {
-                unlink(storage_path('app/public/banners/'.$model->banner));
-            }
-            if ($model->icon) {
-                unlink(storage_path('app/public/icons/'.$model->icon));
-            }
-        });
     }
 }

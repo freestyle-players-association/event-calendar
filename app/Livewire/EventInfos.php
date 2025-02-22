@@ -9,6 +9,7 @@ use Livewire\Component;
 class EventInfos extends Component
 {
     public Event $event;
+
     public function render()
     {
         return view('livewire.event-infos');

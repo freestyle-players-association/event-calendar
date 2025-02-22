@@ -2,7 +2,6 @@
 
 namespace App\Policies;
 
-use App\Core\UserRole;
 use App\Models\Event;
 use App\Models\User;
 

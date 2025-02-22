@@ -41,7 +41,7 @@ jobs:
           APP_NAME=${{ vars.APP_NAME }}
           APP_ENV=${{ vars.APP_ENV }}
           APP_KEY=${{ secrets.APP_KEY }}
-          APP_DEBUG=${{ vars.APP_DEBUG }}
+          APP_DEBUG=false
           APP_TIMEZONE=UTC
           APP_URL=${{ vars.APP_URL }}
 
@@ -128,5 +128,6 @@ jobs:
             php artisan config:cache
             php artisan route:cache
             php artisan view:cache
+            php artisan icons:cache
             php artisan storage:link
             chmod -R 775 storage bootstrap/cache

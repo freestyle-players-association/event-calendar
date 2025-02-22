@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Core\Enum\AssetType;
 use App\Http\Requests\StoreEventRequest;
 use App\Http\Requests\UpdateEventRequest;
 use App\Models\Event;
@@ -60,13 +61,13 @@ class EventController extends Controller
 
         if (isset($banner)) {
             $fileName = $event->id.'.'.$banner->extension();
-            $banner->storeAs('banners', $fileName, 'public');
+            $banner->storeAs(AssetType::BANNER->getPath(), $fileName, 'public');
             $validated['banner'] = $fileName;
         }
 
         if (isset($icon)) {
             $fileName = $event->id.'.'.$icon->extension();
-            $icon->storeAs('icons', $fileName, 'public');
+            $icon->storeAs(AssetType::ICON->getPath(), $fileName, 'public');
             $validated['icon'] = $fileName;
         }
 
@@ -120,13 +121,13 @@ class EventController extends Controller
 
         if (isset($validated['banner']) && $validated['banner'] instanceof UploadedFile) {
             $fileName = $event->id.'.'.$validated['banner']->extension();
-            $validated['banner']->storeAs('banners', $fileName, 'public');
+            $validated['banner']->storeAs(AssetType::BANNER->getPath(), $fileName, 'public');
             $validated['banner'] = $fileName;
         }
 
         if (isset($validated['icon']) && $validated['icon'] instanceof UploadedFile) {
             $fileName = $event->id.'.'.$validated['icon']->extension();
-            $validated['icon']->storeAs('icons', $fileName, 'public');
+            $validated['icon']->storeAs(AssetType::ICON->getPath(), $fileName, 'public');
             $validated['icon'] = $fileName;
         }
 
