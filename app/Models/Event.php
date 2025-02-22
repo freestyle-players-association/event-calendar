@@ -9,6 +9,7 @@ use App\Core\Service\AssetManagerService;
 use App\Models\Scopes\OrderByStartAsc;
 use App\Observers\EventObserver;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -18,6 +19,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Tonysm\RichTextLaravel\Models\Traits\HasRichText;
 
 #[ObservedBy(EventObserver::class)]
+#[ScopedBy(OrderByStartAsc::class)]
 class Event extends Model
 {
     /** @use HasFactory<\Database\Factories\EventFactory> */
@@ -112,15 +114,5 @@ class Event extends Model
     {
         return $this->belongsToMany(User::class)
             ->wherePivot('status', EventUserStatus::ATTENDING);
-    }
-
-    public function status(User $user): string
-    {
-        return $this->users()->where('user_id', $user->id)->first()?->pivot->status ?? '';
-    }
-
-    protected static function booted(): void
-    {
-        static::addGlobalScope(new OrderByStartAsc);
     }
 }

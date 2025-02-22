@@ -20,80 +20,81 @@
                           }">
                         @csrf
 
+                        <x-h1>{{ __('Create Event') }}</x-h1>
                         <!-- Name Field -->
-                        <div>
-                            <x-input-label for="name" :value="__('Name')" />
+                        <div class="mt-4">
+                            <x-input-label for="name" :value="__('Name')"/>
                             <x-text-input id="name"
                                           class="block mt-1 w-full"
                                           type="text"
                                           name="name"
                                           value="{{ old('name') }}"
                                           required
-                                          autofocus />
-                            <x-input-error :messages="$errors->get('name')" class="mt-2" />
+                                          autofocus/>
+                            <x-input-error :messages="$errors->get('name')" class="mt-2"/>
                         </div>
 
                         <!-- Start and End Date Fields -->
-                        <div class="flex gap-2">
-                            <div class="mt-4">
-                                <x-input-label for="start_date" :value="__('Start Date')" />
+                        <div class=" mt-4 flex flex-wrap gap-4 justify-between">
+                            <div>
+                                <x-input-label for="start_date" :value="__('Start Date')"/>
                                 <x-date-input id="start_date"
                                               name="start_date"
                                               x-model="startDate"
-                                              required />
-                                <x-input-error :messages="$errors->get('start_date')" class="mt-2" />
+                                              required/>
+                                <x-input-error :messages="$errors->get('start_date')" class="mt-2"/>
                             </div>
-                            <div class="mt-4">
-                                <x-input-label for="end_date" :value="__('End Date')" />
+                            <div>
+                                <x-input-label for="end_date" :value="__('End Date')"/>
                                 <x-date-input id="end_date"
                                               name="end_date"
                                               x-model="endDate"
-                                              required />
-                                <x-input-error :messages="$errors->get('end_date')" class="mt-2" />
+                                              required/>
+                                <x-input-error :messages="$errors->get('end_date')" class="mt-2"/>
                             </div>
-                        </div>
-
-                        <!-- Location Field -->
-                        <div class="mt-4">
-                            <x-input-label for="location" :value="__('Location')" />
-                            <x-text-input id="location"
-                                          class="block mt-1 w-full"
-                                          type="text"
-                                          name="location"
-                                          value="{{ old('location') }}"
-                                          required />
-                            <x-input-error :messages="$errors->get('location')" class="mt-2" />
+                            <div class="grow">
+                                <x-input-label for="location" :value="__('Location')"/>
+                                <x-text-input id="location"
+                                              class="w-full"
+                                              type="text"
+                                              name="location"
+                                              value="{{ old('location') }}"
+                                              required/>
+                                <x-input-error :messages="$errors->get('location')" class="mt-2"/>
+                            </div>
                         </div>
 
                         <!-- Description Field -->
                         <div class="mt-4">
-                            <x-input-label for="description" :value="__('Description')" />
+                            <x-input-label for="description" :value="__('Description')"/>
                             <x-trix-input id="description"
                                           name="description"
-                                          value="{{ old('description') }}" />
-                            <x-input-error :messages="$errors->get('description')" class="mt-2" />
+                                          value="{!! old('description') !!}"/>
+                            <x-input-error :messages="$errors->get('description')" class="mt-2"/>
                         </div>
 
                         <!-- Banner File Upload -->
                         <div class="mt-4">
-                            <x-input-label for="banner" :value="__('Add a banner, will be shown on the event details page')" />
+                            <x-input-label for="banner"
+                                           :value="__('Add a banner, will be shown on the event details page')"/>
                             <input id="banner"
                                    class="block mt-1 w-full"
                                    type="file"
                                    name="banner"
                                    accept="image/*">
-                            <x-input-error :messages="$errors->get('banner')" class="mt-2" />
+                            <x-input-error :messages="$errors->get('banner')" class="mt-2"/>
                         </div>
 
                         <!-- Icon File Upload -->
                         <div class="mt-4">
-                            <x-input-label for="icon" :value="__('Add a small picture for the calendar (should be square)')" />
+                            <x-input-label for="icon"
+                                           :value="__('Add a small picture for the calendar (should be square)')"/>
                             <input id="icon"
                                    class="block mt-1 w-full"
                                    type="file"
                                    name="icon"
                                    accept="image/*">
-                            <x-input-error :messages="$errors->get('icon')" class="mt-2" />
+                            <x-input-error :messages="$errors->get('icon')" class="mt-2"/>
                         </div>
 
                         <!-- Submit Button -->

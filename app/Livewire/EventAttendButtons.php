@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Core\Service\EventStatusService;
 use App\Models\Event;
 use Illuminate\View\View;
 use Livewire\Component;
@@ -11,10 +12,13 @@ class EventAttendButtons extends Component
     public Event $event;
     public string $status;
 
-    public function mount(Event $event): void
+    public function mount(
+        Event $event,
+        EventStatusService $eventStatusService
+    ): void
     {
         $this->event = $event;
-        $this->status = auth()->user() ? $event->status(auth()->user()) : '';
+        $this->status = auth()->user() ? $eventStatusService->getStatus($event, auth()->user()) : '';
     }
 
     public function render(): View
