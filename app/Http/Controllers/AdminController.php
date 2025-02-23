@@ -21,6 +21,7 @@ class AdminController extends Controller
         }
 
         $event->delete();
+
         return redirect()->route('admin');
     }
 }

@@ -2,8 +2,6 @@
 
 namespace App\Providers;
 
-use App\Models\Event;
-use App\Observers\EventObserver;
 use Illuminate\Support\ServiceProvider;
 use Symfony\Component\HtmlSanitizer\HtmlSanitizer;
 use Symfony\Component\HtmlSanitizer\HtmlSanitizerConfig;
@@ -17,7 +15,7 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->singleton(HtmlSanitizer::class, function ($app) {
             // Create a configuration instance for the sanitizer
-            $config = (new HtmlSanitizerConfig())->allowSafeElements();
+            $config = (new HtmlSanitizerConfig)->allowSafeElements();
 
             // Return a new HtmlSanitizer instance with this config
             return new HtmlSanitizer($config);
@@ -27,7 +25,5 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      */
-    public function boot(): void
-    {
-    }
+    public function boot(): void {}
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Core\Enum\AssetType;
+use App\Core\Service\AssetManagerService;
 use App\Http\Requests\StoreEventRequest;
 use App\Http\Requests\UpdateEventRequest;
 use App\Models\Event;
@@ -19,6 +20,7 @@ class EventController extends Controller
     {
         $events = Event::all();
         $calendar = $events->groupBy(['year', 'month']);
+
         return view('events.index', [
             'events' => $events,
             'calendar' => $calendar,
@@ -31,7 +33,7 @@ class EventController extends Controller
     public function create()
     {
         // users must be logged in to create events
-        if (!auth()->user()) {
+        if (! auth()->user()) {
             return view('events.must-login');
         }
 
@@ -75,7 +77,6 @@ class EventController extends Controller
             $event->update($validated);
         }
 
-
         return redirect()->route('dashboard', $event)->with('success', 'Event created.');
     }
 
@@ -88,7 +89,7 @@ class EventController extends Controller
         if ($slug !== $event->slug) {
             return redirect()->route('events.show', [
                 'event' => $event->id,
-                'slug'  => $event->slug,
+                'slug' => $event->slug,
             ], 301);
         }
 
@@ -112,7 +113,7 @@ class EventController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateEventRequest $request, Event $event, HtmlSanitizer $sanitizer)
+    public function update(UpdateEventRequest $request, Event $event, HtmlSanitizer $sanitizer, AssetManagerService $assetManagerService)
     {
         $validated = $request->validated();
         if (isset($validated['description'])) {
@@ -123,12 +124,18 @@ class EventController extends Controller
             $fileName = $event->id.'.'.$validated['banner']->extension();
             $validated['banner']->storeAs(AssetType::BANNER->getPath(), $fileName, 'public');
             $validated['banner'] = $fileName;
+        } elseif ($request->input('delete_banner')) {
+            $assetManagerService->delete(AssetType::BANNER, $event->banner);
+            $validated['banner'] = null;
         }
 
         if (isset($validated['icon']) && $validated['icon'] instanceof UploadedFile) {
             $fileName = $event->id.'.'.$validated['icon']->extension();
             $validated['icon']->storeAs(AssetType::ICON->getPath(), $fileName, 'public');
             $validated['icon'] = $fileName;
+        } elseif ($request->input('delete_icon')) {
+            $assetManagerService->delete(AssetType::ICON, $event->icon);
+            $validated['icon'] = null;
         }
 
         $event->update($validated);
@@ -148,6 +155,7 @@ class EventController extends Controller
         }
 
         $event->delete();
+
         return redirect()->route('events.index')->with('success', 'Event deleted.');
     }
 }

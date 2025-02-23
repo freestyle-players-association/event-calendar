@@ -3,7 +3,7 @@
 return [
 
     'contact' => [
-        'email' => env('CONTACT_RECEIVER_EMAIL', 'default-email@example.com')
+        'email' => env('CONTACT_RECEIVER_EMAIL', 'default-email@example.com'),
     ],
 
     /*

@@ -8,9 +8,7 @@ use App\Models\Event;
 
 class EventObserver
 {
-    public function __construct(private AssetManagerService $assetManagerService)
-    {
-    }
+    public function __construct(private AssetManagerService $assetManagerService) {}
 
     public function creating(Event $event): void
     {

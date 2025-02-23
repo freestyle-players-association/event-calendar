@@ -17,6 +17,11 @@ class AssetManagerService
         return Storage::disk('public')->delete($this->getPath($type, $fileName));
     }
 
+    public function deleteAll(AssetType $type): bool
+    {
+        return Storage::disk('public')->deleteDirectory($type->getPath());
+    }
+
     public function url(AssetType $type, string $fileName): string
     {
         return asset(Storage::url($this->getPath($type, $fileName)));
@@ -25,15 +30,16 @@ class AssetManagerService
     public function dimensions(AssetType $type, string $fileName): array
     {
         $path = Storage::disk('public')->path($this->getPath($type, $fileName));
-        if (!file_exists($path)) {
-            return [0,0];
+        if (! file_exists($path)) {
+            return [0, 0];
         }
         [$width, $height] = getimagesize($path);
+
         return [$width, $height];
     }
 
     private function getPath(AssetType $type, string $fileName): string
     {
-        return $type->getPath() . '/' . $fileName;
+        return $type->getPath().'/'.$fileName;
     }
 }

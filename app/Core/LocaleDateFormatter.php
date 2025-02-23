@@ -13,6 +13,7 @@ class LocaleDateFormatter
             IntlDateFormatter::MEDIUM,
             IntlDateFormatter::NONE
         );
+
         return $formatter->format(strtotime($date));
     }
 
@@ -24,6 +25,7 @@ class LocaleDateFormatter
             timeType: IntlDateFormatter::NONE,
             pattern: 'd MMM',
         );
+
         return $formatter->format(strtotime($date));
     }
 }

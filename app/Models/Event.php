@@ -23,7 +23,7 @@ use Tonysm\RichTextLaravel\Models\Traits\HasRichText;
 class Event extends Model
 {
     /** @use HasFactory<\Database\Factories\EventFactory> */
-    use HasFactory, HasUlids, HasRichText;
+    use HasFactory, HasRichText, HasUlids;
 
     // add description manually so the rich text editor can save it
     protected $fillable = [
@@ -43,9 +43,10 @@ class Event extends Model
     public function dateRange(): Attribute
     {
         $locale = request()->getPreferredLanguage();
+
         return Attribute::make(
-            get: fn(mixed $value, array $attributes) => LocaleDateFormatter::formatShort($locale, $attributes['start_date'])
-                . ' - ' .
+            get: fn (mixed $value, array $attributes) => LocaleDateFormatter::formatShort($locale, $attributes['start_date'])
+                .' - '.
                 LocaleDateFormatter::formatShort($locale, $attributes['end_date']),
         );
     }
@@ -53,9 +54,10 @@ class Event extends Model
     public function dateRangeFull(): Attribute
     {
         $locale = request()->getPreferredLanguage();
+
         return Attribute::make(
-            get: fn(mixed $value, array $attributes) => LocaleDateFormatter::format($locale, $attributes['start_date'])
-                . ' - ' .
+            get: fn (mixed $value, array $attributes) => LocaleDateFormatter::format($locale, $attributes['start_date'])
+                .' - '.
                 LocaleDateFormatter::format($locale, $attributes['end_date']),
         );
     }

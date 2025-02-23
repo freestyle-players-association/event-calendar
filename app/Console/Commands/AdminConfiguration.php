@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Core\Enum\UserRole;
 use App\Models\User;
 use Illuminate\Console\Command;
+
 use function Laravel\Prompts\search;
 use function Laravel\Prompts\select;
 
@@ -36,7 +37,7 @@ class AdminConfiguration extends Command
                     'add' => 'Make a user an admin',
                     'remove' => 'Remove admin role from a user',
                     'list' => 'List all admins',
-                    'exit' => 'Exit'
+                    'exit' => 'Exit',
                 ]
             );
 
@@ -54,7 +55,7 @@ class AdminConfiguration extends Command
                         break;
                     }
                     $this->info('Admins:');
-                    $this->table(['ID', 'Name', 'Email'], $admins->map(fn(User $user) => [$user->id, $user->name, $user->email]));
+                    $this->table(['ID', 'Name', 'Email'], $admins->map(fn (User $user) => [$user->id, $user->name, $user->email]));
                     break;
                 case 'exit':
                     exit(0);
@@ -67,6 +68,7 @@ class AdminConfiguration extends Command
         $users = User::where('role', UserRole::ADMIN)->get();
         if (count($users) === 0) {
             $this->info('No admins found');
+
             return;
         }
         $userId = select(
@@ -78,14 +80,16 @@ class AdminConfiguration extends Command
 
         try {
             $email = $user->email;
-            if (!$user->isAdmin()) {
+            if (! $user->isAdmin()) {
                 $this->info("'{$email}' is not an admin");
+
                 return;
             }
             $user->role = UserRole::USER;
             $user->save();
         } catch (\Exception) {
             $this->error("'{$email}' not found");
+
             return;
         }
 
@@ -96,19 +100,20 @@ class AdminConfiguration extends Command
     {
         $id = search(
             label: 'Search for the user by email',
-            options: fn(string $value) => strlen($value) > 0
+            options: fn (string $value) => strlen($value) > 0
                 ? User::whereLike('name', "%{$value}%")->pluck('name', 'id')->all()
                 : []
         );
 
-        if (!$id) {
+        if (! $id) {
             $this->error('User not found');
+
             return;
         }
 
         $user = User::find($id);
 
-        if (!$user) {
+        if (! $user) {
             return;
         }
 
@@ -116,12 +121,14 @@ class AdminConfiguration extends Command
             $email = $user->email;
             if ($user->isAdmin()) {
                 $this->info("'{$email}' is already an admin");
+
                 return;
             }
             $user->role = UserRole::ADMIN;
             $user->save();
         } catch (\Exception) {
             $this->error("'{$email}' not found");
+
             return;
         }
 

@@ -10,13 +10,13 @@ use Livewire\Component;
 class EventAttendButtons extends Component
 {
     public Event $event;
+
     public string $status;
 
     public function mount(
         Event $event,
         EventStatusService $eventStatusService
-    ): void
-    {
+    ): void {
         $this->event = $event;
         $this->status = auth()->user() ? $eventStatusService->getStatus($event, auth()->user()) : '';
     }

@@ -13,9 +13,7 @@ class LoremPicsumService
 
     public function __construct(
         private readonly AssetManagerService $assetManagerService
-    )
-    {
-    }
+    ) {}
 
     public function getBanner(): string
     {
@@ -29,10 +27,10 @@ class LoremPicsumService
 
     private function process(AssetType $type): string
     {
-        $fileName = Str::random(40) . '.jpg';
-        $size = AssetType::BANNER === $type ? '1920/600' : '200';
-        $url = self::URL . $size;
-        if (!$image = self::getImage($url)) {
+        $fileName = Str::random(40).'.jpg';
+        $size = $type === AssetType::BANNER ? '1920/600' : '200';
+        $url = self::URL.$size;
+        if (! $image = self::getImage($url)) {
             return '';
         }
 
@@ -50,6 +48,7 @@ class LoremPicsumService
             if ($response->failed()) {
                 throw new Exception("Failed to download image from: {$url}");
             }
+
             return $response->body();
         } catch (Exception) {
             // todo log this error

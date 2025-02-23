@@ -37,6 +37,7 @@ Route::get('/test-email', function () {
         // get email from get parameter
         $message->to(request('email'))->subject('Test Email');
     });
+
     return 'Test email sent!';
 });
 

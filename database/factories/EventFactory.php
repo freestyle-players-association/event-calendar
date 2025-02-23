@@ -14,6 +14,7 @@ class EventFactory extends Factory
      * Define the model's default state.
      *
      * @return array<string, mixed>
+     *
      * @throws \DateMalformedStringException
      */
     public function definition(): array

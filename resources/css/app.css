@@ -7,3 +7,7 @@
 }
 
 [x-cloak] { display: none !important; }
+
+trix-editor {
+    min-height: 22em !important;
+}

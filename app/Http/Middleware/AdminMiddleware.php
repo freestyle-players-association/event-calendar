@@ -2,7 +2,6 @@
 
 namespace App\Http\Middleware;
 
-use App\Core\Enum\UserRole;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -18,7 +17,7 @@ class AdminMiddleware
     public function handle(Request $request, Closure $next): Response
     {
         // Check if the user is logged in and has the 'admin' role
-        if (!Auth::check() || !Auth::user()->role->isAdmin()) {
+        if (! Auth::check() || ! Auth::user()->role->isAdmin()) {
             abort(403, 'Unauthorized access');
         }
 
